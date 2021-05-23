@@ -2,7 +2,7 @@ require('dotenv').config();
 
 // client class allows us to interract with discord API
 // to use it, we create an instance on that class 
-const { Client } = require('discord.js');
+const { Client, MessageEmbed } = require('discord.js');
 
 const bot = new Client();
 const PREFIX = "$";
@@ -10,6 +10,10 @@ const PREFIX = "$";
 // EVENTS
 bot.on('ready', () => {
     console.log(`${bot.user.tag} has logged in!`);
+});
+
+bot.on('guildMemberAdd', (member) => {
+    welcomeNewMember(member);
 });
 
 // by default this doesn't ignore the  bot message
@@ -21,18 +25,18 @@ bot.on('message', (message) => {
     if (message.content.startsWith(PREFIX)) handleMessageCommands(message);
 });
 
-bot.on('guildMemberAdd', (newMember) => {
-    if (newMember.user.bot) return;
-    welcomeNewMember(newMember);
-});
 
-const welcomeNewMember = async (newMember) => {
+const welcomeNewMember = (newMember) => {
     const welcomeChannel = newMember.guild.channels.cache.find(channel => channel.name === 'general');
-    welcomeChannel.send(`
-        Greetings ${newMember.user.tag}, Welcome to LaughAtMyNoob(L.A.M.E)\n
-        This server is a spawn of "radoncreepgaming" YouTube Channel \n
-        Please feel free to relate with others, add friends or share this channel's link
-    `);
+
+    const embed = new MessageEmbed()
+        .setTitle(`WELCOME TO THE SERVER, ${newMember.user.tag}`)
+        .setColor('#E74C3C')
+        .setDescription('Please feel free to vibe with anyone, drop suggestions, and add friends')
+        .setImage('https://i.giphy.com/media/yyVph7ANKftIs/giphy.mp4')
+        .setFooter(`Server: ${newMember.guild.name}`)
+    
+    welcomeChannel.send(embed);
 };
 
 // EVENT HANDLERS
