@@ -1,4 +1,5 @@
 require('dotenv').config();
+const keepAlive = require('./server');
 
 // client class allows us to interract with discord API
 // to use it, we create an instance on that class 
@@ -97,4 +98,6 @@ const banUser = async (message, args) => {
     }
 };
 
+
+keepAlive();
 bot.login(process.env.DISCORDJS_BOT_TOKEN);
